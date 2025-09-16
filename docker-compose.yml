@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  proxy:
+    build: .
+    container_name: proxy
+    ports:
+      - "9021:36699"
+    environment:
+      - UUID=264f7731-d14a-43f4-9f53-80e0bb9756dc
+      - PORT=36699
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - proxy-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "36699"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  proxy-network:
+    driver: bridge
