@@ -10,8 +10,14 @@ WORKDIR /app
 # 复制package.json和package-lock.json
 COPY package*.json ./
 
+# 配置国内镜像源
+RUN npm config set registry 'https://registry.npmmirror.com/'
+
+# 安装pnpm
+RUN npm install -g pnpm
+
 # 安装依赖
-RUN npm ci --only=production
+RUN pnpm install
 
 # 复制应用代码
 COPY app.js ./
